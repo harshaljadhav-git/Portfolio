@@ -34,6 +34,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || "0.0.0.0"; // Bind to all network interfaces
 const DIST_DIR = join(__dirname, "dist");
 
 const MIME_TYPES = {
@@ -111,6 +112,13 @@ const server = createServer(async (req, res) => {
   }
 });
 
-server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}/`);
+server.listen(PORT, HOST, () => {
+  console.log(
+    `Server running at http://${
+      HOST === "0.0.0.0" ? "localhost" : HOST
+    }:${PORT}/`
+  );
+  console.log(
+    `Server is also accessible at http://13.204.47.235:${PORT}/ if that IP is configured correctly`
+  );
 });

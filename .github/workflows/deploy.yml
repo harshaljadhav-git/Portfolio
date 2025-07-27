@@ -105,12 +105,34 @@ jobs:
 
             # Check if the app is already running with PM2
             if pm2 list | grep -q "portfolio"; then
-              # Restart the application
-              pm2 restart portfolio
+              # Restart the application using ecosystem config
+              pm2 restart ecosystem.config.js --env production
             else
-              # Start the application for the first time
-              pm2 start npm --name "portfolio" -- start
+              # Start the application for the first time using ecosystem config
+              pm2 start ecosystem.config.js --env production
             fi
 
             # Save PM2 configuration to ensure it restarts on server reboot
             pm2 save
+
+            # Wait for the server to start
+            sleep 5
+
+            # Check if the server is accessible
+            echo "Checking if server is accessible..."
+            if curl -s http://localhost:3000 > /dev/null; then
+              echo "✅ Server is accessible locally!"
+            else
+              echo "⚠️ Server is not accessible locally. Check logs with: pm2 logs portfolio"
+            fi
+
+            # Check if the server is accessible from the public IP
+            echo "Checking if server is accessible from public IP..."
+            if curl -s http://13.204.47.235:3000 > /dev/null; then
+              echo "✅ Server is accessible from public IP!"
+            else
+              echo "⚠️ Server is not accessible from public IP. Check firewall settings."
+              echo "Run these commands to check and configure the firewall:"
+              echo "sudo ufw status"
+              echo "sudo ufw allow 3000/tcp"
+            fi

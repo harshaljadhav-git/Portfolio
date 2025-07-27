@@ -26,6 +26,87 @@ Ensure your server has the following installed:
 2. npm (comes with Node.js)
 3. PM2 (install globally with `npm install -g pm2`)
 
+### Server Configuration
+
+The application is configured to run on port 3000 and bind to all network interfaces (0.0.0.0) by default. This means it should be accessible from your specific IP address (13.204.47.235:3000).
+
+You can customize the port and host by:
+
+1. Editing the `ecosystem.config.js` file:
+
+   ```js
+   env_production: {
+     NODE_ENV: "production",
+     PORT: 3000,  // Change this to your desired port
+     HOST: "0.0.0.0"  // Use a specific IP if needed
+   }
+   ```
+
+2. Or by setting environment variables when starting the application:
+
+   ```
+   PORT=3000 HOST=0.0.0.0 npm start
+   ```
+
+3. Or by setting environment variables in PM2:
+   ```
+   pm2 set portfolio env.PORT 3000
+   pm2 set portfolio env.HOST "0.0.0.0"
+   pm2 restart portfolio
+   ```
+
+### Firewall Configuration
+
+If you're having trouble accessing the application from your IP address, make sure:
+
+1. The server's firewall allows incoming connections on port 3000:
+
+   ```
+   # For Ubuntu/Debian with UFW
+   sudo ufw allow 3000/tcp
+
+   # For CentOS/RHEL with firewalld
+   sudo firewall-cmd --permanent --add-port=3000/tcp
+   sudo firewall-cmd --reload
+   ```
+
+2. If you're using a cloud provider (AWS, Azure, GCP, etc.), check that the security group or network security rules allow incoming traffic on port 3000.
+
+3. If you're behind a reverse proxy (Nginx, Apache), make sure it's correctly configured to forward requests to your application. An example Nginx configuration is provided in `nginx.conf.example`.
+
+### Troubleshooting
+
+If you're having trouble accessing the application, you can use the included troubleshooting script:
+
+```
+# Make the script executable
+chmod +x troubleshoot.sh
+
+# Run the script
+./troubleshoot.sh
+```
+
+This script will check:
+
+- Node.js version compatibility
+- PM2 installation and application status
+- Port usage
+- Firewall configuration
+- Local and public IP connectivity
+
+You can also run the server check script to test connectivity:
+
+```
+npm run check-server
+```
+
+Common issues and solutions:
+
+1. **Application not starting**: Check PM2 logs with `pm2 logs portfolio`
+2. **Port already in use**: Find and stop the process using port 3000, or change the port in `ecosystem.config.js`
+3. **Firewall blocking access**: Configure your firewall to allow traffic on port 3000
+4. **Node.js version too old**: Use the upgrade script `./upgrade-node.sh`
+
 ### Node.js Version
 
 This project uses Vite v7, which requires Node.js v18.0.0 or higher. If you're encountering the error `TypeError: crypto.hash is not a function`, it means your Node.js version is too old.

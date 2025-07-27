@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "prestart": "node check-node-version.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "check-server": "node check-server.js"
   },
   "dependencies": {
     "framer-motion": "^12.23.6",
