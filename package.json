@@ -3,19 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "engines": {
-    "node": ">=18.0.0"
-  },
   "scripts": {
-    "predev": "node check-node-version.js",
     "dev": "vite",
-    "prebuild": "node check-node-version.js",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "prestart": "node check-node-version.js",
-    "start": "node server.js",
-    "check-server": "node check-server.js"
+    "preview": "vite preview"
   },
   "dependencies": {
     "framer-motion": "^12.23.6",
