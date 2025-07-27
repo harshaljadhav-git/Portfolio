@@ -1,0 +1,116 @@
+name: Deploy to Production Server
+
+on:
+  push:
+    branches: [main] # Adjust this to your main branch name (main, master, etc.)
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.10.0" # Specific version to ensure compatibility with Vite v7
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          source: ".,!node_modules,!.git,!.github,!.vscode,!*.log,!.env*,!.gitignore,!.DS_Store,!src,!public,!*.md"
+          target: ${{ secrets.SERVER_DEPLOY_PATH }}
+          strip_components: 0
+          overwrite: true
+
+      - name: Execute remote commands
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            # Check Node.js version
+            NODE_VERSION=$(node -v)
+            REQUIRED_VERSION="v18.0.0"
+
+            # Function to compare versions
+            version_compare() {
+              # Remove 'v' prefix
+              local v1=$(echo $1 | sed 's/^v//')
+              local v2=$(echo $2 | sed 's/^v//')
+              
+              # Compare major version
+              local major1=$(echo $v1 | cut -d. -f1)
+              local major2=$(echo $v2 | cut -d. -f1)
+              
+              if [ $major1 -lt $major2 ]; then
+                echo "-1"
+                return
+              elif [ $major1 -gt $major2 ]; then
+                echo "1"
+                return
+              fi
+              
+              # Compare minor version
+              local minor1=$(echo $v1 | cut -d. -f2)
+              local minor2=$(echo $v2 | cut -d. -f2)
+              
+              if [ $minor1 -lt $minor2 ]; then
+                echo "-1"
+                return
+              elif [ $minor1 -gt $minor2 ]; then
+                echo "1"
+                return
+              fi
+              
+              # Compare patch version
+              local patch1=$(echo $v1 | cut -d. -f3)
+              local patch2=$(echo $v2 | cut -d. -f3)
+              
+              if [ $patch1 -lt $patch2 ]; then
+                echo "-1"
+              elif [ $patch1 -gt $patch2 ]; then
+                echo "1"
+              else
+                echo "0"
+              fi
+            }
+
+            # Check if Node.js version is sufficient
+            if [ $(version_compare "$NODE_VERSION" "$REQUIRED_VERSION") -lt 0 ]; then
+              echo "Error: Node.js version $REQUIRED_VERSION or higher is required."
+              echo "Current version: $NODE_VERSION"
+              echo "Please upgrade Node.js on the server."
+              exit 1
+            fi
+
+            cd ${{ secrets.SERVER_DEPLOY_PATH }}
+            npm ci --production
+
+            # Check if the app is already running with PM2
+            if pm2 list | grep -q "portfolio"; then
+              # Restart the application
+              pm2 restart portfolio
+            else
+              # Start the application for the first time
+              pm2 start npm --name "portfolio" -- start
+            fi
+
+            # Save PM2 configuration to ensure it restarts on server reboot
+            pm2 save
