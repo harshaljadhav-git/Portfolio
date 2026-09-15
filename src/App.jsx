@@ -443,7 +443,7 @@ const Home = () => {
                 View Projects
               </a>
               <a
-                href="https://portfolio-harshal.s3.ap-south-1.amazonaws.com/Harshal+Jadhav+Resume.pdf"
+                href="/resume.pdf"
                 download="Harshal_Jadhav_Resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
