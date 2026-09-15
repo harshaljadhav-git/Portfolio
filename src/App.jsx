@@ -10,11 +10,12 @@ import {
   SiJenkins,
   SiTerraform,
   SiNginx,
-  SiOracle,
   SiGit,
   SiGithubactions,
   SiGitlab,
+  SiGoogle,
 } from "react-icons/si";
+import { GrOracle } from "react-icons/gr";
 import {
   FaDatabase,
   FaTerminal,
@@ -30,6 +31,15 @@ import {
   FaDocker,
   FaDharmachakra,
   FaAws,
+  FaShieldAlt,
+  FaCoins,
+  FaBolt,
+  FaCheckCircle,
+  FaLock,
+  FaGithub,
+  FaLinkedin,
+  FaCloud,
+  FaBrain,
 } from "react-icons/fa";
 import {
   motion,
@@ -379,7 +389,7 @@ const Home = () => {
             transition={{ duration: 1.5 }}
           >
             <motion.img
-              src="https://portfolio-harshal.s3.ap-south-1.amazonaws.com/IMG_20250528_112932.jpg"
+              src={`${import.meta.env.BASE_URL}profile.png`}
               alt="Harshal Jadhav"
               className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 mx-auto rounded-full mb-4 sm:mb-6 border-4 border-white object-cover"
               initial={{ scale: 0 }}
@@ -450,90 +460,452 @@ const Home = () => {
 };
 
 // About Page
-const About = () => (
-  <section
-    id="About"
-    className="container mx-auto px-4 sm:px-6 py-16 sm:py-20 lg:py-24"
-  >
-    <h2 className="text-3xl sm:text-4xl font-bold text-center mb-8 sm:mb-12">
-      About Me
-    </h2>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 items-center max-w-5xl mx-auto">
+const About = () => {
+  const highlights = [
+    {
+      icon: <FaRobot className="text-blue-500 dark:text-blue-400" />,
+      title: "MLOps & Agentic AI Deployments",
+      desc: "Engineering end-to-end machine learning systems—from containerizing models and orchestrating multi-agent runtimes to deploying low-latency inference endpoints and building automated evaluation pipelines.",
+    },
+    {
+      icon: <FaBrain className="text-pink-500 dark:text-pink-400" />,
+      title: "DevOps as the AI Backbone",
+      desc: "Treating DevOps as the vital foundation for AI: applying Kubernetes orchestration, Terraform IaC, and automated CI/CD to eliminate fragility, ensuring reproducible model environments, zero-downtime rollouts, and low-latency serving.",
+    },
+    {
+      icon: <FaShieldAlt className="text-blue-500 dark:text-blue-400" />,
+      title: "Enterprise Cloud & DevSecOps",
+      desc: "Architecting HIPAA-compliant healthcare solutions, air-gapped clusters, and security-first environments across Azure & AWS with Terraform, least-privilege IAM, and automated vulnerability scanning (SonarQube, Trivy).",
+    },
+    {
+      icon: <FaCoins className="text-emerald-500 dark:text-emerald-400" />,
+      title: "FinOps & AI Compute Economics",
+      desc: "FinOps Certified Engineer implementing intelligent resource rightsizing and serverless automation, reducing cloud infrastructure and GPU/compute operational spend by up to 40%.",
+    },
+  ];
+
+  const metrics = [
+    { value: "40%", label: "Cloud Cost Savings", sub: "Via FinOps & resource rightsizing" },
+    { value: "35%", label: "Image Size Reduction", sub: "Optimized Docker multi-stage builds" },
+    { value: "20%", label: "Faster Release Cycles", sub: "Automated end-to-end CI/CD" },
+    { value: "10+", label: "Projects Deployed", sub: "Cloud, Kubernetes & AI Pipelines" },
+  ];
+
+  return (
+    <section
+      id="About"
+      className="container mx-auto px-4 sm:px-6 py-16 sm:py-20 lg:py-24"
+    >
       <AnimateOnScroll>
-        <div className="text-justify">
-          <p className="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
-            I'm a Computer Science Engineer with a strong focus on DevOps, Cloud
-            Infrastructure, and Automation. From backend engineering to
-            designing production-ready CI/CD pipelines, I thrive at the
-            intersection of code, cloud, and containers.
-          </p>
-          <p className="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
-            I craft the design of battle-tested CI/CD pipelines using Jenkins,
-            Docker, and Kubernetes—bringing infrastructure to life with
-            precision and resilience.
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-semibold tracking-wide uppercase bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-700">
+            <FaCheckCircle className="text-emerald-500 text-xs" />
+            DevOps & Cloud Engineer • MLOps & Agentic AI
+          </span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mt-4 mb-4 text-black dark:text-white">
+            About Me
+          </h2>
+          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+            Harnessing DevOps as the foundational backbone to architect, scale, and operationalize Machine Learning and Agentic AI systems.
           </p>
         </div>
       </AnimateOnScroll>
-      <AnimateOnScroll delay={0.2}>
-        <div className="relative">
-          {/* </motion.div> */}
-          <motion.div
-            className="absolute -top-4 -left-4 sm:-top-6 sm:-left-6 glassmorphism p-3 sm:p-4 lg:p-6 rounded-lg"
-            initial={{ opacity: 0, scale: 0.5 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 1.0 }}
-            viewport={{ once: true }}
-          >
-            <div className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-blue-400">
-                10+
+
+      {/* Main Grid: Story + Image Showcase */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center max-w-6xl mx-auto mb-16">
+        {/* Left: Bio narrative */}
+        <AnimateOnScroll className="lg:col-span-7">
+          <div className="space-y-4 sm:space-y-5 text-gray-700 dark:text-gray-300 text-base sm:text-lg leading-relaxed text-justify">
+            <p>
+              I am a <strong className="text-black dark:text-white font-semibold">Cloud & DevOps Engineer</strong> at{" "}
+              <strong className="text-black dark:text-white font-semibold">Biztransights Solutions LLP</strong>, with a B.Tech in Computer Science and Engineering. While my foundation is anchored in building battle-tested cloud platforms across{" "}
+              <strong className="text-black dark:text-white font-semibold">Microsoft Azure and AWS</strong>, I am actively channeling my engineering focus towards{" "}
+              <span className="font-semibold text-black dark:text-white">MLOps, Machine Learning workflows, and Agentic AI deployments</span>.
+            </p>
+            <p>
+              I firmly believe that the future of artificial intelligence hinges on reliable operations: <span className="font-semibold text-black dark:text-white">DevOps is the vital backbone of AI</span>. Autonomous agents, LLM pipelines, and deep learning models cannot produce enterprise impact without reproducible environments, automated CI/CD for model weights and code, container orchestration on Kubernetes, low-latency inference serving, and real-time observability.
+            </p>
+            <p>
+              My hands-on toolkit bridges <span className="font-semibold text-black dark:text-white">Terraform (IaC)</span>, air-gapped production Kubernetes clusters, and automated DevSecOps with cutting-edge explorations in <span className="font-semibold text-black dark:text-white">Agentic AI systems</span>—from orchestrating multi-agent runtimes and vector retrieval stores to building resilient evaluation pipelines. As a certified <span className="font-semibold text-black dark:text-white">FinOps Engineer</span>, I also ensure that compute-heavy AI infrastructure is architected with strict cost efficiency and resource rightsizing.
+            </p>
+
+            {/* Quick Links & Profiles */}
+            <div className="pt-3 flex flex-wrap items-center gap-3">
+              <a
+                href="https://github.com/harshaljadhav-git"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-black dark:text-white border border-gray-300 dark:border-gray-700 transition-all duration-200 hover:scale-105"
+              >
+                <FaGithub className="text-base" />
+                <span>GitHub</span>
+              </a>
+              <a
+                href="https://www.linkedin.com/in/harshal-jadhav-75b8371b0/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/40 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 transition-all duration-200 hover:scale-105"
+              >
+                <FaLinkedin className="text-base text-blue-600 dark:text-blue-400" />
+                <span>LinkedIn</span>
+              </a>
+              <a
+                href="#Contact"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById("Contact")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors underline underline-offset-4"
+              >
+                <span>Let's connect →</span>
+              </a>
+            </div>
+          </div>
+        </AnimateOnScroll>
+
+        {/* Right: Modern Visual with Floating Badges */}
+        <AnimateOnScroll delay={0.2} className="lg:col-span-5">
+          <div className="relative mx-auto max-w-md lg:max-w-none">
+            {/* Top Floating Badge: MLOps & Agentic AI */}
+            <motion.div
+              className="absolute -top-4 -left-4 sm:-top-5 sm:-left-6 z-20 backdrop-blur-md bg-white/90 dark:bg-gray-900/90 border border-gray-200 dark:border-gray-700 p-3 sm:p-4 rounded-xl shadow-xl flex items-center gap-3"
+              initial={{ opacity: 0, y: -20, scale: 0.8 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+            >
+              <div className="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-950/60 flex items-center justify-center text-purple-600 dark:text-purple-400 flex-shrink-0">
+                <FaRobot className="text-xl" />
               </div>
-              <div className="text-xs sm:text-sm text-gray-400">
-                Projects Deployed
+              <div className="text-left">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400">
+                  Focus Area
+                </div>
+                <div className="text-sm font-bold text-black dark:text-white">
+                  MLOps & Agentic AI
+                </div>
+                <div className="text-[11px] text-gray-500 dark:text-gray-400">
+                  Model Serving & Agents
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Main Visual Image with gradient overlay */}
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-800 group">
+              <img
+                src={`${import.meta.env.BASE_URL}photo-1451187580459-43490279c0fa.avif`}
+                alt="Cloud Infrastructure & Architecture"
+                className="w-full h-72 sm:h-80 md:h-96 object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-end p-6">
+                <div className="flex items-center gap-2 text-white/90 text-xs font-medium mb-1">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  Active in Cloud, MLOps & AI
+                </div>
+                <div className="text-white text-base font-semibold">
+                  DevOps • MLOps • Agentic AI Systems
+                </div>
               </div>
             </div>
-          </motion.div>
-          <img
-            src="/public/photo-1451187580459-43490279c0fa.avif"
-            alt="A view of Earth from space at night, showing city lights."
-            className="rounded-lg shadow-2xl w-full h-auto object-cover"
-          />
+
+            {/* Bottom Floating Badge: FinOps Certified */}
+            <motion.div
+              className="absolute -bottom-4 -right-4 sm:-bottom-5 sm:-right-6 z-20 backdrop-blur-md bg-white/90 dark:bg-gray-900/90 border border-gray-200 dark:border-gray-700 p-3 sm:p-4 rounded-xl shadow-xl flex items-center gap-3"
+              initial={{ opacity: 0, y: 20, scale: 0.8 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <div className="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 flex items-center justify-center text-emerald-600 dark:text-emerald-400 flex-shrink-0">
+                <FaCoins className="text-xl" />
+              </div>
+              <div className="text-left">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                  Certified
+                </div>
+                <div className="text-sm font-bold text-black dark:text-white">
+                  FinOps Engineer
+                </div>
+                <div className="text-[11px] text-gray-500 dark:text-gray-400">
+                  The Linux Foundation
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </AnimateOnScroll>
+      </div>
+
+      {/* Metrics Row */}
+      <AnimateOnScroll delay={0.3}>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-6xl mx-auto mb-16">
+          {metrics.map((item, idx) => (
+            <div
+              key={idx}
+              className="bg-gray-50 dark:bg-gray-800/70 border border-gray-200 dark:border-gray-700 p-4 sm:p-5 rounded-xl text-center hover:border-gray-400 dark:hover:border-gray-500 transition-colors shadow-sm"
+            >
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-black dark:text-white tracking-tight mb-1">
+                {item.value}
+              </div>
+              <div className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-100">
+                {item.label}
+              </div>
+              <div className="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 mt-1">
+                {item.sub}
+              </div>
+            </div>
+          ))}
         </div>
       </AnimateOnScroll>
-    </div>
-  </section>
-);
+
+      {/* Core Competencies 4-Card Grid */}
+      <div className="max-w-6xl mx-auto">
+        <h3 className="text-xl sm:text-2xl font-bold text-center mb-8 text-black dark:text-white">
+          What I Bring to Engineering Teams
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {highlights.map((item, index) => (
+            <AnimateOnScroll key={index} delay={index * 0.1}>
+              <div className="h-full bg-white dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700 p-5 sm:p-6 rounded-xl shadow-sm hover:shadow-md hover:border-gray-400 dark:hover:border-gray-600 transition-all duration-300 flex items-start gap-4">
+                <div className="text-2xl sm:text-3xl p-3 rounded-lg bg-gray-100 dark:bg-gray-700/60 flex-shrink-0">
+                  {item.icon}
+                </div>
+                <div>
+                  <h4 className="text-base sm:text-lg font-bold text-black dark:text-white mb-2">
+                    {item.title}
+                  </h4>
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
+              </div>
+            </AnimateOnScroll>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 // Projects Page
 const Projects = ({ openProjectModal }) => {
   const projects = [
     {
-      title: "CMI-Construction-CRM",
+      title: "Healthcare Patient Monitoring Platform — On-Premises Production Deployment",
+      subtitle: "Production Healthcare Application • US-Based Hospital Chain Client",
+      badge: "Healthcare • Air-Gapped Kubernetes",
       description:
-        "Automated build, test, and deployment for a Node.js application.",
-      tags: ["Node.js", "Jenkins", "Docker", "Kubernetes"],
-      imgSrc: "/CMI.png",
+        "Production healthcare application deployed on-premises for a US-based hospital-chain client, supporting real-time patient health monitoring and clinical alerting.",
+      architecture:
+        "The platform collects patient metrics from connected medical devices such as IDAN, blood pressure monitors, and other bedside monitoring systems, processes incoming telemetry, and provides real-time health insights to clinical teams. When monitored vital parameters breach configured safety thresholds, the system triggers audible alerts within patient hospital rooms alongside instant notifications to attending medical staff and doctors for rapid clinical intervention.",
+      operationalContext:
+        "Deployed and operationalized within a fully isolated on-premises environment with no direct internet access (air-gapped), focusing on container orchestration, high availability, secure infrastructure, automation, and operational resilience.",
+      sections: [
+        {
+          title: "Infrastructure & Deployment",
+          icon: "fas fa-network-wired",
+          items: [
+            "Deployed frontend and backend application workloads on an on-premises Kubernetes cluster.",
+            "Containerized application components using Docker for consistent and repeatable deployments.",
+            "Deployed and operated Apache Kafka for real-time event and telemetry processing between application components.",
+            "Managed PostgreSQL as the application data layer for storing and retrieving operational and health-related data.",
+            "Configured Kubernetes workloads, services, networking, secrets, and application configurations for the production environment.",
+            "Designed deployment workflows suitable for an air-gapped / internet-restricted infrastructure environment.",
+          ],
+        },
+        {
+          title: "Secure & Isolated Operations",
+          icon: "fas fa-shield-alt",
+          items: [
+            "Implemented Ubuntu server hardening across the underlying infrastructure.",
+            "Operated the environment without direct internet access, reducing external exposure and requiring controlled internal software delivery mechanisms.",
+            "Configured self-hosted GitHub Actions runners within the on-premises environment to execute CI/CD workflows without requiring application servers to access the public internet.",
+            "Supported secure handling of application artifacts, configurations, credentials, and deployment packages within the isolated environment.",
+          ],
+        },
+        {
+          title: "Backup & Operational Resilience",
+          icon: "fas fa-database",
+          items: [
+            "Implemented backup processes for critical application and infrastructure data.",
+            "Established file backup and retention procedures to support operational recovery and controlled storage management.",
+            "Supported disaster-recovery readiness through controlled backup retention and restoration procedures.",
+            "Performed infrastructure troubleshooting, deployment support, and operational maintenance across the Kubernetes environment.",
+          ],
+        },
+      ],
+      tags: [
+        "Kubernetes",
+        "Docker",
+        "Apache Kafka",
+        "PostgreSQL",
+        "GitHub Actions",
+        "Self-Hosted Runners",
+        "Ubuntu Linux",
+        "On-Premises",
+      ],
+      engineeringFocus: [
+        "Healthcare Technology",
+        "On-Premises Kubernetes",
+        "Real-Time Data Processing",
+        "Containerization",
+        "CI/CD",
+        "Air-Gapped Infrastructure",
+        "Linux Hardening",
+        "Backup & Retention",
+        "Production Operations",
+      ],
+      imgSrc: `${import.meta.env.BASE_URL}healthcare-monitoring-platform.jpg`,
+      github: "https://github.com/harshaljadhav-git",
+    },
+    {
+      title: "E-Commerce Microservices Platform",
+      badge: "Cloud-Native • AWS EKS Microservices",
+      description:
+        "Production-style microservices platform deployed on AWS EKS with Terraform, Kubernetes, Helm, GitHub Actions, ArgoCD, Prometheus, Grafana, and centralized logging.",
+      architecture:
+        "Designed as a scalable cloud-native architecture with 15 microservices, an Angular frontend, API Gateway, service discovery, asynchronous infrastructure services, and AWS-managed infrastructure components.",
+      highlights: [
+        "Provisioned AWS networking and EKS infrastructure using Terraform.",
+        "Containerized and orchestrated 15 Spring Boot microservices with Kubernetes.",
+        "Used Helm for Kubernetes application and infrastructure deployment.",
+        "Implemented GitHub Actions for automated testing and container image publishing.",
+        "Implemented ArgoCD GitOps-based continuous delivery.",
+        "Added Prometheus and Grafana for metrics and infrastructure observability.",
+        "Implemented centralized logging using Fluentd, OpenSearch, and Kibana.",
+        "Configured Kubernetes Horizontal Pod Autoscaling for critical workloads.",
+        "Used Kubernetes ConfigMaps and Secrets to separate configuration from application code.",
+        "Integrated AWS services including EKS, RDS, S3, and VPC.",
+      ],
+      tags: [
+        "AWS",
+        "EKS",
+        "Kubernetes",
+        "Terraform",
+        "Helm",
+        "Docker",
+        "GitHub Actions",
+        "ArgoCD",
+        "Prometheus",
+        "Grafana",
+        "OpenSearch",
+        "Kibana",
+        "Spring Boot",
+        "Angular",
+      ],
+      imgSrc: `${import.meta.env.BASE_URL}ecommerce-microservices.jpg`,
+      github: "https://github.com/harshaljadhav-git/E-commerce-microservices-kubernetes.git",
     },
     {
       title: "Cloudfin Insights",
+      subtitle: "FinOps & Real-Time Financial Analytics Pipeline",
+      badge: "FinOps • Serverless Analytics",
       description:
-        "Serverless financial data pipeline using Lambda, RDS, Glue & QuickSight for real-time analytics.",
-      tags: ["QuickSight", "AWS", "VPC", "S3", "Glue"],
-      imgSrc: "/Clodfin.png",
+        "Serverless financial data pipeline leveraging AWS Lambda, Glue, RDS, and Amazon QuickSight for real-time cost intelligence and financial telemetry.",
+      architecture:
+        "Automated event-driven ETL ingestion pipeline processing transaction data and cloud billing metrics through AWS Lambda and AWS Glue crawlers, storing aggregated analytics in Amazon S3 and PostgreSQL/RDS, and rendering real-time business intelligence dashboards via Amazon QuickSight.",
+      highlights: [
+        "Constructed serverless event-driven ingestion using AWS Lambda and Amazon EventBridge.",
+        "Built automated ETL transformations and data cataloging using AWS Glue.",
+        "Delivered interactive financial metrics and cost-optimization dashboards in Amazon QuickSight.",
+        "Configured secure VPC networking, IAM least-privilege roles, and S3 lifecycle encryption.",
+        "Implemented automated cloud cost anomaly detection and financial alerting.",
+      ],
+      tags: ["AWS Lambda", "AWS Glue", "QuickSight", "RDS", "Amazon S3", "VPC", "FinOps"],
+      imgSrc: `${import.meta.env.BASE_URL}cloudfin-insights.jpg`,
+      github: "https://github.com/harshaljadhav-git",
     },
     {
       title: "Zomato Clone App",
+      subtitle: "Automated CI/CD Delivery & Telemetry Pipeline",
+      badge: "DevOps • CI/CD Pipeline",
       description:
-        "CI/CD Pipeline to deploy a ZOMATO Clone App using a variety of modern DevOps tools and services.",
-      tags: ["Jenkins", "Docker", "AWS", "Grafana", "Prometheus"],
-      imgSrc: "/Zomato.png",
+        "End-to-end CI/CD pipeline deploying a full-stack Zomato food delivery clone on AWS using Docker, Jenkins, SonarQube, Prometheus, and Grafana.",
+      architecture:
+        "Architected a robust automated deployment lifecycle triggering from GitHub commits: Jenkins executes containerized builds and unit testing, runs SonarQube static analysis, containerizes application images via Docker, deploys workloads to AWS infrastructure, and continuously monitors runtime health via Prometheus exporters and Grafana dashboards.",
+      highlights: [
+        "Built declarative Jenkins multi-stage pipeline for automated build, test, and container packaging.",
+        "Containerized frontend and backend services using optimized multi-stage Docker builds.",
+        "Configured Prometheus metric scrapers and custom Grafana alerting dashboards for server metrics and uptime.",
+        "Integrated SonarQube SAST code quality gates preventing regressions in delivery pipelines.",
+        "Deployed and load balanced production workloads on AWS EC2 with reverse-proxy configurations.",
+      ],
+      tags: ["Jenkins", "Docker", "AWS", "Prometheus", "Grafana", "SonarQube", "CI/CD"],
+      imgSrc: `${import.meta.env.BASE_URL}zomato-deployment.jpg`,
+      github: "https://github.com/harshaljadhav-git",
     },
     {
       title: "StreamVibe",
+      badge: "Full-Stack • Video Platform",
       description:
         "A full-stack video streaming platform. Features refreshing theme & video management capabilities.",
       tags: ["Node.js", "Vite.js", "PostgreSQL", "Docker", "AWS"],
-      imgSrc: "/StreamVibe.png",
+      imgSrc: `${import.meta.env.BASE_URL}StreamVibe.png`,
+      github: "https://github.com/harshaljadhav-git",
+    },
+    {
+      title: "AI Business Automation Platform",
+      subtitle: "Full-Stack AI-Powered Enterprise Automation",
+      badge: "MLOps • Agentic AI • Full-Stack",
+      description:
+        "An end-to-end AI-driven business automation platform featuring real-time KPI dashboards, AI-controlled campaign management, inventory intelligence, and market analytics — built with React, Express, PostgreSQL, and automated CI/CD.",
+      architecture:
+        "Full-stack application with a React/Vite SPA frontend using Shadcn UI, TanStack React Query, and a domain-driven state store with event bus. The Express/Node.js backend provides RESTful APIs with RBAC middleware, Drizzle ORM over PostgreSQL, and Vite HMR integration. Shared TypeScript schemas ensure type safety across the stack.",
+      sections: [
+        {
+          title: "Backend Core — Express / Node.js",
+          icon: "fas fa-server",
+          items: [
+            "RESTful API layer with routes for Campaigns, Inventory, Market Analytics, and AI Controls.",
+            "Authentication & session management with Role-Based Access Control (RBAC) middleware.",
+            "Drizzle ORM with shared TypeScript schema definitions over PostgreSQL.",
+            "In-memory and mock store fallbacks for resilient development and testing.",
+          ],
+        },
+        {
+          title: "Frontend SPA — React / Vite",
+          icon: "fas fa-desktop",
+          items: [
+            "Client-side routing with Wouter and domain state management via custom store and event bus.",
+            "TanStack React Query for server-state synchronization and caching.",
+            "Dashboard with real-time KPIs, AI Control page for engine triggers, and Campaign/Inventory management.",
+            "Shadcn UI component system with Command Palette, App Sidebar, Inspector Drawer, and KPI Strips.",
+          ],
+        },
+        {
+          title: "Quality Assurance & DevOps",
+          icon: "fas fa-cogs",
+          items: [
+            "CI/CD pipeline via GitHub Actions workflow for automated build, test, and deployment.",
+            "Comprehensive test automation with Vitest covering client domain, server API, and schema validation.",
+            "SonarQube static code analysis integration for continuous code quality enforcement.",
+          ],
+        },
+      ],
+      tags: [
+        "React",
+        "TypeScript",
+        "Express",
+        "Node.js",
+        "PostgreSQL",
+        "Drizzle ORM",
+        "Vite",
+        "Shadcn UI",
+        "GitHub Actions",
+        "Vitest",
+        "SonarQube",
+        "RBAC",
+      ],
+      engineeringFocus: [
+        "Agentic AI",
+        "Full-Stack Development",
+        "Domain-Driven Design",
+        "CI/CD Automation",
+        "Role-Based Access Control",
+        "Real-Time Dashboards",
+        "Test Automation",
+      ],
+      imgSrc: `${import.meta.env.BASE_URL}ai-business-automation.jpg`,
+      github: "https://github.com/harshaljadhav-git/ai-business-automation.git",
     },
   ];
 
@@ -556,6 +928,11 @@ const Projects = ({ openProjectModal }) => {
             >
               <div className="p-4 sm:p-6 h-full flex flex-col">
                 <div className="flex-grow">
+                  {project.badge && (
+                    <span className="inline-block px-2.5 py-0.5 mb-2.5 rounded-full text-[11px] font-semibold tracking-wide uppercase bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+                      {project.badge}
+                    </span>
+                  )}
                   <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-3 sm:mb-4 text-black dark:text-white group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors duration-300">
                     {project.title}
                   </h3>
@@ -563,12 +940,12 @@ const Projects = ({ openProjectModal }) => {
                     {project.description}
                   </p>
                 </div>
-                <div className="mt-auto">
-                  <div className="flex flex-wrap gap-2">
+                <div className="mt-auto pt-2">
+                  <div className="flex flex-wrap gap-1.5 mb-4">
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="bg-gray-100 dark:bg-gray-700 text-black dark:text-white px-3 py-1 rounded-full text-xs font-medium border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
+                        className="bg-gray-100 dark:bg-gray-700 text-black dark:text-white px-2.5 py-0.5 rounded-full text-xs font-medium border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
                       >
                         {tag}
                       </span>
@@ -608,15 +985,15 @@ const Skills = () => {
   const skills = [
     { name: "AWS", icon: <FaAws color="#FF9900" /> },
     { name: "Azure", icon: <FaMicrosoft color="#0078D4" /> },
-    { name: "Oracle Cloud", icon: <SiOracle color="#4285F4" /> },
+    { name: "GCP", icon: <SiGoogle color="#4285F4" /> },
     { name: "MySQL", icon: <FaDatabase color="#4479A1" /> },
     { name: "PostgreSQL", icon: <FaDatabase color="#336791" /> },
     { name: "Git", icon: <SiGit color="#F05032" /> },
     { name: "GitLab", icon: <SiGitlab color="#FCA121" /> },
     { name: "Github Actions", icon: <SiGithubactions color="#2088FF" /> },
+    { name: "Azure DevOps", icon: <FaMicrosoft color="#0078D4" /> },
     { name: "Prometheus", icon: <SiPrometheus color="#E6522C" /> },
     { name: "Grafana", icon: <SiGrafana color="#F46800" /> },
-    { name: "Python", icon: <SiPython color="#3776AB" /> },
     { name: "Java", icon: <FaJava color="#007396" /> },
     { name: "Shell Scripting", icon: <FaTerminal color="#4EAA25" /> },
     { name: "Docker", icon: <FaDocker color="#2496ED" /> },
@@ -626,6 +1003,10 @@ const Skills = () => {
     { name: "Ansible", icon: <FaRobot color="#000000" /> },
     { name: "Apache", icon: <FaFeatherAlt color="#CA2136" /> },
     { name: "NGINX", icon: <FaServer color="#009639" /> },
+    { name: "MLflow", icon: <FaBrain color="#0194E2" /> },
+    { name: "Kubeflow", icon: <FaDharmachakra color="#326CE5" /> },
+    { name: "Apache Airflow", icon: <FaLayerGroup color="#017CEE" /> },
+    { name: "DVC", icon: <FaDatabase color="#13ADC7" /> },
   ];
   return (
     <section
@@ -657,13 +1038,20 @@ const Skills = () => {
 const Experience = () => {
   const experiences = [
     {
+      role: "Cloud & DevOps Engineer",
+      company: "Biztransights Solutions LLP",
+      duration: "Feb 2026 - Present",
+      description: `Building secure AWS and Azure infrastructure with Terraform, automating CI/CD delivery through Azure DevOps, and strengthening cloud environments with DevSecOps, monitoring, and infrastructure automation.`,
+      logo: `${import.meta.env.BASE_URL}biztransights.png`,
+    },
+    {
       role: "DevOps Engineer",
       company: "Kylient Software Solutions Pvt Ltd",
-      duration: "April 2025 - Present",
+      duration: "Jan 2025 - Feb 2026",
       description: `Designing and implementing battle-tested CI/CD pipelines.
 Container orchestration with Docker and Kubernetes.
 Infrastructure automation and optimization.`,
-      logo: "/kylient.jpg",
+      logo: `${import.meta.env.BASE_URL}kylient.jpg`,
     },
     {
       role: "Cloud Engineer Intern",
@@ -672,7 +1060,7 @@ Infrastructure automation and optimization.`,
       description: `Architected scalable VPC environments on AWS.
 Implemented security best practices and automation.
 Cloud infrastructure monitoring and optimization.`,
-      logo: "/variant.jpg",
+      logo: `${import.meta.env.BASE_URL}variant.jpg`,
     },
     {
       role: "Software Engineer Intern",
@@ -681,7 +1069,7 @@ Cloud infrastructure monitoring and optimization.`,
       description: `Built robust backend systems with Java.
 SQL Server integration and optimization.
 Full-stack development and API design.`,
-      logo: "/infocepts.jpg",
+      logo: `${import.meta.env.BASE_URL}infocepts.jpg`,
     },
   ];
 
@@ -770,9 +1158,9 @@ const Certifications = () => {
       icon: "fab fa-aws",
     },
     {
-      name: "Spring Boot 3, Spring 6 & Hibernate",
-      issuer: "Udemy",
-      icon: "fas fa-leaf",
+      name: "Microsoft Certified: Azure Administrator Associate",
+      issuer: "Microsoft",
+      icon: "fab fa-microsoft",
     },
     {
       name: "B.Tech in Computer Science and Engineering",
@@ -925,37 +1313,156 @@ const ProjectModal = ({ project, onClose }) => {
           className="w-full h-48 sm:h-64 object-cover"
         />
         <div className="p-4 sm:p-6 lg:p-8">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">
+          <div className="flex flex-wrap items-center gap-2 mb-2.5">
+            {project.badge && (
+              <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-wide uppercase bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+                {project.badge}
+              </span>
+            )}
+            {project.subtitle && (
+              <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">
+                • {project.subtitle}
+              </span>
+            )}
+          </div>
+
+          <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 text-black dark:text-white">
             {project.title}
           </h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-4 sm:mb-6 text-sm sm:text-base leading-relaxed">
-            {project.description} This is a more detailed explanation of the
-            project, outlining the challenges faced, the solutions implemented,
-            and the overall impact on the system's efficiency and reliability.
+          <p className="text-gray-600 dark:text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base leading-relaxed">
+            {project.description}
           </p>
-          <div className="flex flex-wrap gap-2 mb-4 sm:mb-6">
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="bg-gray-200 dark:bg-gray-700 text-black dark:text-white text-xs sm:text-sm font-semibold px-2 sm:px-3 py-1 rounded-full"
-              >
-                {tag}
+
+          {project.architecture && (
+            <p className="text-gray-600 dark:text-gray-300 mb-4 sm:mb-5 text-sm sm:text-base leading-relaxed">
+              {project.architecture}
+            </p>
+          )}
+
+          {project.operationalContext && (
+            <div className="mb-5 sm:mb-6 p-3.5 sm:p-4 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 text-xs sm:text-sm text-blue-950 dark:text-blue-200 leading-relaxed flex items-start gap-3">
+              <span className="text-blue-600 dark:text-blue-400 mt-0.5 text-base flex-shrink-0">
+                <i className="fas fa-shield-alt"></i>
               </span>
-            ))}
+              <div>
+                <strong className="font-semibold block mb-0.5 text-blue-900 dark:text-blue-100">
+                  Air-Gapped / Isolated Production Environment:
+                </strong>
+                <span>{project.operationalContext}</span>
+              </div>
+            </div>
+          )}
+
+          {project.sections && project.sections.length > 0 ? (
+            <div className="space-y-4 sm:space-y-5 mb-5 sm:mb-6">
+              {project.sections.map((section, sIdx) => (
+                <div
+                  key={sIdx}
+                  className="bg-gray-50 dark:bg-gray-900/60 p-4 sm:p-5 rounded-xl border border-gray-200 dark:border-gray-700"
+                >
+                  <h3 className="text-base sm:text-lg font-bold mb-3 text-black dark:text-white flex items-center gap-2.5">
+                    {section.icon && (
+                      <span className="text-emerald-500 dark:text-emerald-400 text-sm">
+                        <i className={section.icon}></i>
+                      </span>
+                    )}
+                    <span>{section.title}</span>
+                  </h3>
+                  <ul className="space-y-2 text-xs sm:text-sm text-gray-700 dark:text-gray-300">
+                    {section.items.map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-2.5">
+                        <span className="text-emerald-500 dark:text-emerald-400 mt-0.5 flex-shrink-0 text-xs">
+                          <i className="fas fa-check-circle"></i>
+                        </span>
+                        <span className="leading-snug">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          ) : (
+            project.highlights &&
+            project.highlights.length > 0 && (
+              <div className="mb-5 sm:mb-6">
+                <h3 className="text-base sm:text-lg font-bold mb-3 text-black dark:text-white flex items-center gap-2">
+                  <span>Engineering Highlights</span>
+                </h3>
+                <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                  {project.highlights.map((highlight, idx) => (
+                    <li key={idx} className="flex items-start gap-2.5">
+                      <span className="text-emerald-500 dark:text-emerald-400 mt-0.5 flex-shrink-0 text-xs">
+                        <i className="fas fa-check-circle"></i>
+                      </span>
+                      <span className="leading-snug">{highlight}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )
+          )}
+
+          {project.detailedDescription && !project.highlights && !project.sections && (
+            <p className="text-gray-600 dark:text-gray-300 mb-4 sm:mb-6 text-sm sm:text-base leading-relaxed whitespace-pre-line">
+              {project.detailedDescription}
+            </p>
+          )}
+
+          {project.engineeringFocus && project.engineeringFocus.length > 0 && (
+            <div className="mb-5 sm:mb-6">
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2.5">
+                Engineering Focus
+              </h4>
+              <div className="flex flex-wrap gap-1.5">
+                {project.engineeringFocus.map((focus) => (
+                  <span
+                    key={focus}
+                    className="bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 text-xs font-medium px-2.5 py-1 rounded-full border border-blue-200 dark:border-blue-800"
+                  >
+                    {focus}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="mb-5 sm:mb-6">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2.5">
+              Technology Stack
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {project.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="bg-gray-100 dark:bg-gray-700 text-black dark:text-white text-xs sm:text-sm font-medium px-2.5 sm:px-3 py-1 rounded-full border border-gray-300 dark:border-gray-600"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-            <a
-              href="#"
-              className="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white font-medium flex items-center justify-center sm:justify-start text-sm sm:text-base"
-            >
-              <i className="fab fa-github mr-2"></i>View on GitHub
-            </a>
-            <a
-              href="https://testcmi-nest.kylient.com/login"
-              className="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white font-medium flex items-center justify-center sm:justify-start text-sm sm:text-base"
-            >
-              <i className="fas fa-external-link-alt mr-2"></i>Live Demo
-            </a>
+
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+            {project.github && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 font-medium px-5 py-2.5 rounded-lg inline-flex items-center justify-center text-sm transition-colors duration-200"
+              >
+                <i className="fab fa-github mr-2"></i>View on GitHub
+              </a>
+            )}
+            {project.liveDemo && (
+              <a
+                href={project.liveDemo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border border-gray-300 dark:border-gray-600 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 font-medium px-5 py-2.5 rounded-lg inline-flex items-center justify-center text-sm transition-colors duration-200"
+              >
+                <i className="fas fa-external-link-alt mr-2"></i>Live Demo
+              </a>
+            )}
           </div>
         </div>
         <button
